@@ -22,7 +22,7 @@ class tableViewController: UITableViewController {
     func addItem(){
         
         let alertController = UIAlertController(title: "Type Something", message: "Type...", preferredStyle: UIAlertControllerStyle.Alert)
-        let confirmAction = UIAlertAction(title: "Type Something!!!!!!!", style: UIAlertActionStyle.Default, handler: ({
+        let confirmAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.Default, handler: ({
             (_) in
             
             if let field = alertController.textFields![0] as? UITextField{
@@ -37,7 +37,7 @@ class tableViewController: UITableViewController {
         
         alertController.addTextFieldWithConfigurationHandler( {
             (textField) in
-            textField.placeholder = "Type something"
+            textField.placeholder = "What do you have to do?"
         })
         
         alertController.addAction(confirmAction)
@@ -50,9 +50,11 @@ class tableViewController: UITableViewController {
     func saveItem(itemToSave:String){
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
-        let entity = NSEntityDescription.entityForName("ListItems", inManagedObjectContext: managedContext)
+        let entity = NSEntityDescription.entityForName("ListEntity", inManagedObjectContext: managedContext)
         
         let item = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        
+        item.setValue(itemToSave, forKey: "item")
         
         do{
              try managedContext.save()
@@ -61,6 +63,36 @@ class tableViewController: UITableViewController {
         catch{
             print("error")
         }
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        let fetchRequest = NSFetchRequest(entityName: "ListEntity")
+        
+        do{
+            let results = try managedContext.executeFetchRequest(fetchRequest)
+            listItems = results as! [NSManagedObject]
+        }
+        catch{
+            print("error")
+        }
+        
+    }
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        
+//        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Right)
+        
+        managedContext.deleteObject(listItems[indexPath.row])
+        listItems.removeAtIndex(indexPath.row)
+        self.tableView.reloadData()
         
     }
 
@@ -76,6 +108,9 @@ class tableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
         
+        let item = listItems[indexPath.row]
+        
+        cell.textLabel?.text = item.valueForKey("item") as? String
         
         return cell
     }
