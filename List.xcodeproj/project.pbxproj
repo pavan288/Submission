@@ -13,6 +13,7 @@
 		2733A3D21DB1E013008A0278 /* List.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2733A3D01DB1E013008A0278 /* List.xcdatamodeld */; };
 		2733A3D41DB1E013008A0278 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2733A3D31DB1E013008A0278 /* Assets.xcassets */; };
 		2733A3D71DB1E013008A0278 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733A3D51DB1E013008A0278 /* LaunchScreen.storyboard */; };
+		2733A3DF1DB230A8008A0278 /* detailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733A3DE1DB230A8008A0278 /* detailedViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		2733A3D31DB1E013008A0278 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2733A3D61DB1E013008A0278 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2733A3D81DB1E013008A0278 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2733A3DE1DB230A8008A0278 /* detailedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = detailedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				2733A3C91DB1E013008A0278 /* AppDelegate.swift */,
 				2733A3CB1DB1E013008A0278 /* ViewController.swift */,
+				2733A3DE1DB230A8008A0278 /* detailedViewController.swift */,
 				2733A3CD1DB1E013008A0278 /* Main.storyboard */,
 				2733A3D31DB1E013008A0278 /* Assets.xcassets */,
 				2733A3D51DB1E013008A0278 /* LaunchScreen.storyboard */,
@@ -140,6 +143,7 @@
 			files = (
 				2733A3CC1DB1E013008A0278 /* ViewController.swift in Sources */,
 				2733A3CA1DB1E013008A0278 /* AppDelegate.swift in Sources */,
+				2733A3DF1DB230A8008A0278 /* detailedViewController.swift in Sources */,
 				2733A3D21DB1E013008A0278 /* List.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

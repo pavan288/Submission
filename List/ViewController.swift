@@ -19,17 +19,17 @@ class tableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: #selector(tableViewController.addItem))
         
         
-        let longpress = UILongPressGestureRecognizer(target: self, action: "longPressGestureRecognized:")
+        let longpress = UILongPressGestureRecognizer(target: self, action: #selector(tableViewController.longPressGestureRecognized(_:)))
         tableView.addGestureRecognizer(longpress)
     }
-    
+//  implementing gesture recognizer
     
     func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer) {
         
         let longPress = gestureRecognizer as! UILongPressGestureRecognizer
         let state = longPress.state
-        var locationInView = longPress.locationInView(tableView)
-        var indexPath = tableView.indexPathForRowAtPoint(locationInView)
+        let locationInView = longPress.locationInView(tableView)
+        let indexPath = tableView.indexPathForRowAtPoint(locationInView)
         
         struct My {
             static var cellSnapshot : UIView? = nil
@@ -106,19 +106,20 @@ class tableViewController: UITableViewController {
         return cellSnapshot
     }
 
-    
+//  implemeting persistent storage using core data
     func addItem(){
         
-        let alertController = UIAlertController(title: "Type Something", message: "Type...", preferredStyle: UIAlertControllerStyle.Alert)
+        let alertController = UIAlertController(title: "New Item", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        
         let confirmAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.Default, handler: ({
             (_) in
             
-            if let field = alertController.textFields![0] as? UITextField{
-                
-                self.saveItem(field.text!)
-                self.tableView.reloadData()
-                
-            }
+            let itemField = alertController.textFields![0] as? UITextField
+            let detailField = alertController.textFields![1] as? UITextField
+       
+            self.saveItem(itemField!.text!,detailToSave: detailField!.text!)
+            self.tableView.reloadData()
+            
         }))
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
@@ -128,6 +129,11 @@ class tableViewController: UITableViewController {
             textField.placeholder = "What do you have to do?"
         })
         
+        alertController.addTextFieldWithConfigurationHandler( {
+            (textField) in
+            textField.placeholder = "Enter some details about it"
+        })
+        
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
         
@@ -135,7 +141,7 @@ class tableViewController: UITableViewController {
         
     }
     
-    func saveItem(itemToSave:String){
+    func saveItem(itemToSave:String,detailToSave:String){
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         let entity = NSEntityDescription.entityForName("ListEntity", inManagedObjectContext: managedContext)
@@ -143,16 +149,19 @@ class tableViewController: UITableViewController {
         let item = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
         
         item.setValue(itemToSave, forKey: "item")
+        item.setValue(detailToSave, forKey: "detail")
         
         do{
              try managedContext.save()
             listItems.append(item)
+           
         }
         catch{
             print("error")
         }
         
     }
+   
     
     override func viewWillAppear(animated: Bool) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -168,6 +177,7 @@ class tableViewController: UITableViewController {
         }
         
     }
+//    deletion logic
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
@@ -185,10 +195,6 @@ class tableViewController: UITableViewController {
         
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listItems.count
@@ -200,8 +206,26 @@ class tableViewController: UITableViewController {
         let item = listItems[indexPath.row]
         
         cell.textLabel?.text = item.valueForKey("item") as? String
-        
+         print(listItems.count)
         return cell
     }
+    
+    
+//    passing data via segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowDetail" {
+            if let destination = segue.destinationViewController as? detailedViewController {
+                
+                let path = tableView.indexPathForSelectedRow
+//                let cell = tableView.cellForRowAtIndexPath(path!)
+                let detail = listItems[path!.row]
+                destination.desc = detail.valueForKey("detail") as? String
+            }
+        }
+    }
+
+    
+    
 }
 

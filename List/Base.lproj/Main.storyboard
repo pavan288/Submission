@@ -3,9 +3,10 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Things to Do-->
         <scene sceneID="QK2-uc-N4E">
             <objects>
                 <tableViewController id="bXK-lC-WW3" customClass="tableViewController" customModule="List" customModuleProvider="target" sceneMemberID="viewController">
@@ -22,6 +23,9 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <gestureRecognizers/>
+                                <connections>
+                                    <segue destination="CPG-HX-aMf" kind="show" identifier="ShowDetail" id="YgC-yr-dUa"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -29,11 +33,46 @@
                             <outlet property="delegate" destination="bXK-lC-WW3" id="vHs-3c-TaW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="1nK-VP-Eco"/>
+                    <navigationItem key="navigationItem" title="Things to Do" id="1nK-VP-Eco"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B32-Vm-5bw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1251" y="113"/>
+        </scene>
+        <!--Detailed View Controller-->
+        <scene sceneID="sL6-3p-hxF">
+            <objects>
+                <viewController id="CPG-HX-aMf" customClass="detailedViewController" customModule="List" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0rb-rs-f9q"/>
+                        <viewControllerLayoutGuide type="bottom" id="296-FU-xTK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="76h-0x-UxF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iLD-eH-lT5">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="296-FU-xTK" firstAttribute="top" secondItem="iLD-eH-lT5" secondAttribute="bottom" id="cdY-Ek-Zor"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iLD-eH-lT5" secondAttribute="trailing" constant="-20" id="oII-qm-HR2"/>
+                            <constraint firstItem="iLD-eH-lT5" firstAttribute="top" secondItem="0rb-rs-f9q" secondAttribute="bottom" id="qFw-Of-raE"/>
+                            <constraint firstItem="iLD-eH-lT5" firstAttribute="leading" secondItem="76h-0x-UxF" secondAttribute="leadingMargin" constant="-20" id="rzg-As-Kfz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="viaSegueLabel" destination="iLD-eH-lT5" id="VXf-Er-sfE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CyP-Kn-URP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1941" y="113"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uEL-va-Mey">
@@ -42,6 +81,8 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4yB-bb-b8I">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="1" green="0.35116754378028503" blue="0.46507387598327199" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="bXK-lC-WW3" kind="relationship" relationship="rootViewController" id="pyl-ni-Hz2"/>
